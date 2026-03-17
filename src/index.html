@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulsatance - Service Overview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', 'Avenir', 'Futura', sans-serif;
+            background: #f5f5f0;
+            color: #2a2a2a;
+            line-height: 1.6;
+        }
+        
+        .page {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fafaf8;
+            padding: 60px 80px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        /* Paper texture overlay */
+        .page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.01) 2px,
+                    rgba(0,0,0,0.01) 4px
+                );
+            pointer-events: none;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #d0d0d0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #2a2a2a;
+        }
+        
+        .header-subtitle {
+            font-size: 11px;
+            color: #666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .chapter-title {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            font-weight: 400;
+            color: #2a2a2a;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .intro {
+            font-size: 15px;
+            color: #3a3a3a;
+            margin-bottom: 35px;
+            line-height: 1.7;
+        }
+        
+        .diagram-container {
+            margin: 40px 0;
+            padding: 30px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .figure-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .diagram {
+            width: 100%;
+            height: 280px;
+            position: relative;
+        }
+        
+        .definition-content {
+            padding: 20px 30px;
+        }
+        
+        .definition-entry {
+            margin-bottom: 20px;
+        }
+        
+        .definition-word {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2a2a2a;
+            margin-bottom: 5px;
+        }
+        
+        .definition-pronunciation {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+        
+        .definition-pos {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .definition-text {
+            font-size: 14px;
+            color: #3a3a3a;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .definition-number {
+            color: #666;
+            font-weight: 600;
+            margin-right: 8px;
+            display: inline-block;
+            width: 20px;
+            margin-left: -20px;
+        }
+        
+        .definition-note {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #f9f9f7;
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .definition-etymology {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .caption {
+            font-size: 12px;
+            color: #555;
+            margin-top: 15px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 35px 0;
+        }
+        
+        .service-item {
+            padding: 20px;
+            background: #fff;
+            border-left: 3px solid #ff6b6b;
+        }
+        
+        .service-number {
+            font-size: 11px;
+            color: #ff6b6b;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .service-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #2a2a2a;
+            margin-bottom: 8px;
+        }
+        
+        .service-desc {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .approach-section {
+            margin: 35px 0;
+        }
+        
+        .approach-section h3 {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .approach-text {
+            font-size: 14px;
+            color: #3a3a3a;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        
+        .note {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            padding-left: 20px;
+            border-left: 2px solid #ff6b6b;
+            margin: 25px 0;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #d0d0d0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .contact-info {
+            font-size: 12px;
+            color: #555;
+        }
+        
+        .contact-info a {
+            color: #ff6b6b;
+            text-decoration: none;
+        }
+        
+        .page-number {
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .coral {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div class="logo-area">
+                <h1>Pulsatance</h1>
+            </div>
+            <div class="header-subtitle">Service Overview</div>
+        </div>
+        
+        <div class="chapter-title">Chapter 1</div>
+        <h2>On Strategic Dynamics for Biotech Organizations</h2>
+        
+        <p class="intro">
+            So you're building something important in the life sciences. The science is solid, but the path forward isn't linear—markets shift, competitors pivot, internal dynamics oscillate. What you need isn't another framework deck. You need someone who can map the forces at play, identify where momentum lives, and help you change direction without losing velocity.
+        </p>
+        
+        <div class="diagram-container">
+            <div class="figure-label">Definition 1.1</div>
+            <div class="definition-content">
+                <div class="definition-entry">
+                    <div class="definition-word">pul·sa·tance</div>
+                    <div class="definition-pronunciation">/pəlˈsātəns/</div>
+                    <div class="definition-pos"><em>noun</em> • Physics (archaic)</div>
+                    <div class="definition-text">
+                        <span class="definition-number">1.</span> Angular velocity; the rate of change of angular position with respect to time.
+                    </div>
+                    <div class="definition-text">
+                        <span class="definition-number">2.</span> The measure of rotational motion that describes how quickly an object changes direction while maintaining momentum.
+                    </div>
+                    <div class="definition-note">
+                        <strong>Note:</strong> Unlike linear velocity, which describes movement in a straight line, pulsatance captures the dynamic relationship between directional change and sustained motion—a body in rotation maintains its energy while continuously reorienting its trajectory.
+                    </div>
+                </div>
+                <div class="definition-etymology">
+                    <strong>Etymology:</strong> From Latin <em>pulsare</em> (to beat, to strike) + <em>-ance</em> (state or quality of). Mid-19th century term largely superseded by "angular velocity" in modern usage.
+                </div>
+            </div>
+            <p class="caption">
+                In strategic contexts: the capacity to pivot direction without losing momentum—to reorient competitive positioning, product focus, or organizational structure while preserving forward energy and market velocity.
+            </p>
+        </div>
+        
+        <div class="approach-section">
+            <h3>How It Works</h3>
+            <p class="approach-text">
+                I work with biotech companies at inflection points—when the science is ready but the path forward isn't obvious. Think: competitive intelligence to understand market dynamics, product strategy to identify where to focus R&D investment, or organizational design to scale without losing momentum. The work is fractional and strategic: typically 2-4 days per month over 6-12 month engagements.
+            </p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-item">
+                <div class="service-number">1.1 // COMPETITIVE INTELLIGENCE</div>
+                <div class="service-title">Map the Landscape</div>
+                <p class="service-desc">
+                    Who's moving where, and why. Build the competitive intelligence function that helps your team anticipate market shifts rather than react to them.
+                </p>
+            </div>
+            
+            <div class="service-item">
+                <div class="service-number">1.2 // PRODUCT STRATEGY</div>
+                <div class="service-title">Focus the Portfolio</div>
+                <p class="service-desc">
+                    Which bets to make, which to defer. Strategic prioritization that aligns technical roadmaps with market opportunities.
+                </p>
+            </div>
+            
+            <div class="service-item">
+                <div class="service-number">1.3 // AI × BIOLOGY</div>
+                <div class="service-title">Navigate the Hype</div>
+                <p class="service-desc">
+                    Where foundation models actually create value in your domain. Separate signal from noise in the AI gold rush.
+                </p>
+            </div>
+            
+            <div class="service-item">
+                <div class="service-number">1.4 // ECOSYSTEM BUILDING</div>
+                <div class="service-title">Design Developer Velocity</div>
+                <p class="service-desc">
+                    Platforms, APIs, community dynamics. Build the ecosystem that makes your technology the obvious choice.
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="contact-info">
+                <a href="mailto:justin@pulsatance.com">justin@pulsatance.com</a> • pulsatance.com
+            </div>
+            <div class="page-number">— 1 —</div>
+        </div>
+    </div>
+</body>
+</html>
