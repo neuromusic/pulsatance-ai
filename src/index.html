@@ -3,368 +3,674 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulsatance - Service Overview</title>
+    <title>Pulsatance</title>
+    <meta name="description" content="We help early-stage biotechs, research organizations, and science philanthropies place bets they won't regret.">
+    <meta property="og:title" content="Pulsatance">
+    <meta property="og:description" content="We help early-stage biotechs, research organizations, and science philanthropies place bets they won't regret.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
-        
+        :root {
+            /* Color tokens per BRAND.md */
+            --charcoal: #2a2a2a;
+            --rich-black: #3a3a3a;
+            --graphite: #666;
+            --warm-gray: #555;
+            --slate: #999;
+            --silver: #d0d0d0;
+            --light-gray: #e0e0e0;
+            --warm-white: #fafaf8;
+            --off-white: #f9f9f7;
+            --ambient: #f5f5f0;
+            --coral: #ff6b6b;
+            --coral-light: #ff8f8f;
+            --coral-deep: #e85555;
+
+            --font-sans: 'Futura', 'Avenir', 'Montserrat', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: 'Montserrat', 'Avenir', 'Futura', sans-serif;
-            background: #f5f5f0;
-            color: #2a2a2a;
-            line-height: 1.6;
+
+        html {
+            scroll-behavior: smooth;
         }
-        
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--ambient);
+            color: var(--rich-black);
+            font-weight: 400;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         .page {
-            max-width: 800px;
+            max-width: 860px;
             margin: 40px auto;
-            background: #fafaf8;
-            padding: 60px 80px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            background: var(--warm-white);
+            padding: 80px 90px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             position: relative;
         }
-        
-        /* Paper texture overlay */
+
+        /* Paper-grain overlay */
         .page::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0,0,0,0.01) 2px,
-                    rgba(0,0,0,0.01) 4px
-                );
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.01) 2px,
+                rgba(0, 0, 0, 0.01) 4px
+            );
             pointer-events: none;
         }
-        
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 50px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #d0d0d0;
+
+        .page > * {
+            position: relative;
         }
-        
-        .logo-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        h1 {
-            font-size: 28px;
+
+        /* ---------- Wordmark ---------- */
+        .wordmark {
+            font-size: 22px;
             font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+        }
+
+        /* ---------- Hairline rule ---------- */
+        .rule {
+            border: 0;
+            border-top: 1px solid var(--silver);
+            margin: 70px 0;
+        }
+
+        /* ---------- Hero ---------- */
+        .hero {
+            margin-top: 60px;
+            margin-bottom: 30px;
+            max-width: 720px;
+        }
+
+        .hero .overline {
+            font-size: 12px;
+            font-weight: 400;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #2a2a2a;
+            color: var(--coral);
+            font-style: italic;
+            margin-bottom: 24px;
         }
-        
-        .header-subtitle {
-            font-size: 11px;
-            color: #666;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+
+        .hero .headline {
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--charcoal);
+            margin-bottom: 22px;
+            letter-spacing: -0.2px;
         }
-        
-        .chapter-title {
-            font-size: 13px;
-            font-weight: 600;
+
+        .hero .subhead {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--rich-black);
+        }
+
+        /* ---------- Figure / caption ---------- */
+        .figure {
+            margin: 0;
+        }
+
+        .figure-frame {
+            background: var(--off-white);
+            border: 1px solid var(--light-gray);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .figure-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Placeholder shown until figure image is generated */
+        .figure-placeholder {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            color: var(--slate);
+            text-align: center;
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(0, 0, 0, 0.02) 10px,
+                    rgba(0, 0, 0, 0.02) 20px
+                ),
+                var(--off-white);
+        }
+
+        .figure-placeholder.square {
+            aspect-ratio: 1 / 1;
+        }
+
+        .figure-placeholder .ph-label {
+            font-size: 9px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #666;
-            margin-bottom: 8px;
+            color: var(--graphite);
+            margin-bottom: 6px;
         }
-        
-        h2 {
-            font-size: 22px;
-            font-weight: 400;
-            color: #2a2a2a;
-            margin-bottom: 30px;
+
+        .figure-placeholder .ph-desc {
+            font-size: 10px;
             font-style: italic;
+            color: var(--graphite);
+            line-height: 1.4;
         }
-        
-        .intro {
-            font-size: 15px;
-            color: #3a3a3a;
-            margin-bottom: 35px;
-            line-height: 1.7;
+
+        .caption {
+            font-size: 11px;
+            color: var(--warm-gray);
+            font-style: italic;
+            line-height: 1.5;
+            margin-top: 10px;
         }
-        
-        .diagram-container {
-            margin: 40px 0;
-            padding: 30px;
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            position: relative;
-        }
-        
-        .figure-label {
-            font-size: 12px;
+
+        .caption strong {
             font-weight: 600;
-            color: #666;
-            margin-bottom: 15px;
+            font-style: normal;
+            color: var(--graphite);
+        }
+
+        /* ---------- Definition block ---------- */
+        .definition {
+            background: #fff;
+            border: 1px solid var(--light-gray);
+            padding: 30px 40px;
+            margin: 60px 0;
+        }
+
+        .definition-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            color: var(--graphite);
+            margin-bottom: 16px;
+        }
+
+        .definition-word {
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--charcoal);
             letter-spacing: 0.5px;
         }
-        
-        .diagram {
-            width: 100%;
-            height: 280px;
-            position: relative;
-        }
-        
-        .definition-content {
-            padding: 20px 30px;
-        }
-        
-        .definition-entry {
-            margin-bottom: 20px;
-        }
-        
-        .definition-word {
-            font-size: 24px;
-            font-weight: 600;
-            color: #2a2a2a;
-            margin-bottom: 5px;
-        }
-        
-        .definition-pronunciation {
-            font-size: 14px;
-            color: #666;
-            font-style: italic;
-            margin-bottom: 8px;
-        }
-        
+
         .definition-pos {
             font-size: 13px;
-            color: #666;
-            margin-bottom: 12px;
+            color: var(--graphite);
+            font-style: italic;
+            margin-top: 4px;
+            margin-bottom: 20px;
         }
-        
-        .definition-text {
+
+        .definition-list {
+            list-style: none;
+            counter-reset: def;
+            margin-bottom: 20px;
+        }
+
+        .definition-list li {
+            counter-increment: def;
             font-size: 14px;
-            color: #3a3a3a;
+            color: var(--rich-black);
             line-height: 1.7;
             margin-bottom: 10px;
-            padding-left: 20px;
+            padding-left: 26px;
+            position: relative;
         }
-        
-        .definition-number {
-            color: #666;
+
+        .definition-list li::before {
+            content: counter(def) ".";
+            position: absolute;
+            left: 0;
+            color: var(--graphite);
             font-weight: 600;
-            margin-right: 8px;
-            display: inline-block;
-            width: 20px;
-            margin-left: -20px;
         }
-        
-        .definition-note {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.6;
-            margin-top: 15px;
-            padding: 12px 15px;
-            background: #f9f9f7;
-            border-left: 3px solid #ff6b6b;
-        }
-        
+
         .definition-etymology {
             font-size: 12px;
-            color: #666;
-            line-height: 1.6;
-            padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .caption {
-            font-size: 12px;
-            color: #555;
-            margin-top: 15px;
-            line-height: 1.5;
+            color: var(--warm-gray);
             font-style: italic;
+            line-height: 1.6;
+            padding-top: 16px;
+            border-top: 1px solid var(--light-gray);
         }
-        
-        .services-grid {
+
+        /* ---------- Chapter ---------- */
+        .chapter-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--graphite);
+            margin-bottom: 10px;
+        }
+
+        .chapter-title {
+            font-size: 22px;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--charcoal);
+            margin-bottom: 30px;
+            letter-spacing: -0.1px;
+        }
+
+        .chapter-intro {
+            font-size: 16px;
+            color: var(--rich-black);
+            line-height: 1.7;
+            margin-bottom: 50px;
+            max-width: 620px;
+        }
+
+        /* ---------- Chapter body ---------- */
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .chapter-body {
+            max-width: 620px;
+        }
+
+        .chapter-body p {
+            font-size: 15px;
+            color: var(--rich-black);
+            line-height: 1.75;
+            margin-bottom: 18px;
+        }
+
+        .chapter-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Engagement grid ---------- */
+        .engagements {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin: 35px 0;
+            gap: 40px 50px;
+            margin-top: 30px;
         }
-        
-        .service-item {
-            padding: 20px;
-            background: #fff;
-            border-left: 3px solid #ff6b6b;
-        }
-        
-        .service-number {
-            font-size: 11px;
-            color: #ff6b6b;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        
-        .service-title {
+
+        .engagement-title {
             font-size: 15px;
             font-weight: 600;
-            color: #2a2a2a;
-            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            color: var(--charcoal);
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
         }
-        
-        .service-desc {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
+
+        .engagement-body {
+            font-size: 14px;
+            color: var(--rich-black);
+            line-height: 1.7;
         }
-        
-        .approach-section {
-            margin: 35px 0;
+
+        /* ---------- Author ---------- */
+        .author {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 50px;
+            align-items: start;
+            margin-top: 30px;
         }
-        
-        .approach-section h3 {
+
+        .portrait-frame {
+            border: 1px solid var(--light-gray);
+            background: var(--off-white);
+            padding: 8px;
+        }
+
+        .portrait-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+        }
+
+        .portrait-caption {
+            margin-top: 12px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .portrait-caption .author-name {
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 15px;
+            color: var(--charcoal);
+            letter-spacing: 0.3px;
         }
-        
-        .approach-text {
-            font-size: 14px;
-            color: #3a3a3a;
-            line-height: 1.7;
-            margin-bottom: 12px;
-        }
-        
-        .note {
-            font-size: 12px;
-            color: #666;
+
+        .portrait-caption .author-role {
+            font-size: 11px;
             font-style: italic;
-            padding-left: 20px;
-            border-left: 2px solid #ff6b6b;
-            margin: 25px 0;
+            color: var(--graphite);
+            margin-top: 2px;
         }
-        
-        .footer {
+
+        .author-body {
+            font-size: 14px;
+            color: var(--rich-black);
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+
+        /* ---------- Chapter CTA ---------- */
+        .chapter-cta {
             margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #d0d0d0;
+            padding: 30px 0 10px;
+            text-align: center;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .chapter-cta-copy {
+            font-size: 15px;
+            font-style: italic;
+            color: var(--rich-black);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .email-cta {
+            display: inline-block;
+            font-size: 20px;
+            letter-spacing: 0.5px;
+            color: var(--charcoal);
+            text-decoration: none;
+            padding: 4px 0;
+            border-bottom: 1px solid transparent;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .email-cta:hover,
+        .email-cta:focus-visible {
+            color: var(--coral);
+            border-bottom-color: var(--coral);
+        }
+
+        .email-cta:active {
+            color: var(--coral-deep);
+        }
+
+        /* ---------- Footer ---------- */
+        .footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--silver);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        
-        .contact-info {
+
+        .footer .wordmark {
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
             font-size: 12px;
-            color: #555;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        
-        .contact-info a {
-            color: #ff6b6b;
+
+        .footer-links a {
+            color: var(--warm-gray);
             text-decoration: none;
+            transition: color 0.15s ease;
         }
-        
-        .page-number {
-            font-size: 11px;
-            color: #999;
-            font-style: italic;
+
+        .footer-links a:hover,
+        .footer-links a:focus-visible {
+            color: var(--coral);
         }
-        
-        .coral {
-            color: #ff6b6b;
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 720px) {
+            .page {
+                margin: 16px;
+                padding: 40px 28px;
+            }
+
+            .chapter-grid,
+            .engagements,
+            .author {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .hero .headline {
+                font-size: 24px;
+            }
+
+            .definition {
+                padding: 24px 0;
+                margin: 40px 0;
+            }
+
+            .chapter-intro {
+                margin-bottom: 32px;
+            }
+
+            .portrait-frame {
+                max-width: 220px;
+            }
+
+            .rule {
+                margin: 50px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <div class="header">
-            <div class="logo-area">
-                <h1>Pulsatance</h1>
-            </div>
-            <div class="header-subtitle">AI × BIOLOGY</div>
-        </div>
-        
-        <div class="diagram-container">
-            <div class="figure-label">Definition 1.1</div>
-            <div class="definition-content">
-                <div class="definition-entry">
-                    <div class="definition-word">pul·sa·tance</div>
-                    <!-- <div class="definition-pronunciation">/pəlˈsātəns/</div> -->
-                    <div class="definition-pos"><em>noun</em> • Physics (archaic)</div>
-                    <div class="definition-text">
-                        <span class="definition-number">1.</span> Angular velocity; the rate of change of angular position with respect to time.
-                    </div>
-                    <div class="definition-text">
-                        <span class="definition-number">2.</span> The capacity to pivot direction without losing velocity—maintaining forward energy while reorienting trajectory.
-                    </div>
-                </div>
-                <div class="definition-etymology">
-                    <strong>Etymology:</strong> From Latin <em>pulsare</em> (to beat, to strike) + <em>-ance</em> (state or quality of). Mid-19th century term largely superseded by "angular velocity" in modern usage.
-                </div>
-            </div>
-        </div>
-        
-<!--         
-        <div class="approach-section">
-            <h3>How It Works</h3>
-            <p class="approach-text">
-                I work with biotech companies and research institutes at inflection points, when the path forward isn't obvious. Think: competitive intelligence to understand market dynamics, product strategy to identify where to focus R&D investment, or organizational design to scale without losing momentum.
-            </p>
-        </div>
+    <main class="page">
 
-        <div class="services-grid">
-            <div class="service-item">
-                <div class="service-number">1.1 // COMPETITIVE INTELLIGENCE</div>
-                <div class="service-title">Map the Landscape</div>
-                <p class="service-desc">
-                    Who's moving where, and why. Build the competitive intelligence function that helps your team anticipate market shifts rather than react to them.
+        <!-- ========== HERO ========== -->
+        <header>
+            <div class="wordmark">Pulsatance</div>
+        </header>
+
+        <section class="hero">
+            <div class="overline">AI is moving faster than your strategy.</div>
+            <h1 class="headline">
+                We help early-stage biotechs, research organizations, and science philanthropies place bets they won't regret.
+            </h1>
+            <p class="subhead">
+                We embed as a fractional leader, advisor, or partner, depending on what the problem actually needs.
+            </p>
+        </section>
+
+        <!-- ========== DEFINITION 1.1 ========== -->
+        <section class="definition" aria-label="Definition">
+            <div class="definition-label">Definition 1.1</div>
+            <div class="definition-word">pul·sa·tance</div>
+            <div class="definition-pos"><em>noun</em> · Physics (archaic)</div>
+            <ol class="definition-list">
+                <li>Angular velocity; the rate of change of angular position with respect to time.</li>
+                <li>The capacity to pivot direction without losing velocity: maintaining forward energy while reorienting trajectory.</li>
+            </ol>
+            <p class="definition-etymology">
+                Etymology: From Latin <em>pulsare</em> (to beat, to strike) + <em>-ance</em> (state or quality of). Mid-19th century term largely superseded by "angular velocity" in modern usage.
+            </p>
+        </section>
+
+        <hr class="rule">
+
+        <!-- ========== CHAPTER 1 ========== -->
+        <section id="chapter-1">
+            <div class="chapter-label">Chapter 1</div>
+            <h2 class="chapter-title">On the problems we solve</h2>
+            <p class="chapter-intro">
+                Most science organizations have the taste to know what to build. What they're missing is someone in the room who has done it before.
+            </p>
+
+            <div class="chapter-grid">
+                <div class="chapter-body">
+                    <p>
+                        Early-stage biotechs know the science cold but often lack a seasoned product operator. Research organizations have deep domain expertise but limited experience shipping software at scale. Science philanthropies know the field they're funding but don't always have a technical operator to pressure-test the strategy.
+                    </p>
+                    <p>
+                        The decisions these teams face (which AI capabilities to invest in, how to turn technology into a product, what a portfolio should add up to, which vendor or hire is actually worth the risk) need both scientific fluency and operator's instinct. That combination is rare on any team, and even rarer on the teams that need it most.
+                    </p>
+                    <p>
+                        That's the gap we fill. We bring the operator's experience, the technical judgment, and the scientific context, and we apply them to whichever decision is in front of you this quarter.
+                    </p>
+                </div>
+                <figure class="figure">
+                    <div class="figure-frame">
+                        <!-- Replace with: <img src="assets/figures/fig-01-angular-velocity.png" alt="Angular velocity diagram: a rotating vector around a fixed point with curved arrow indicating rotation direction."> -->
+                        <div class="figure-placeholder square">
+                            <div class="ph-label">Fig. 1 · pending</div>
+                            <div class="ph-desc">Angular velocity. Vector rotating around a point, coral on vector, grayscale axes.</div>
+                        </div>
+                    </div>
+                    <figcaption class="caption"><strong>Fig. 1.</strong> Angular velocity.</figcaption>
+                </figure>
+            </div>
+
+            <div class="chapter-cta">
+                <p class="chapter-cta-copy">
+                    If this sounds like your situation, or if you're not sure, write us. We read everything.
                 </p>
+                <a href="mailto:justin@pulsatance.ai" class="email-cta">justin@pulsatance.ai</a>
             </div>
-            
-            <div class="service-item">
-                <div class="service-number">1.2 // PRODUCT STRATEGY</div>
-                <div class="service-title">Focus the Portfolio</div>
-                <p class="service-desc">
-                    Which bets to make, which to defer. Strategic prioritization that aligns technical roadmaps with market opportunities.
+        </section>
+
+        <hr class="rule">
+
+        <!-- ========== CHAPTER 2 ========== -->
+        <section id="chapter-2">
+            <div class="chapter-label">Chapter 2</div>
+            <h2 class="chapter-title">On the structures of engagement</h2>
+            <p class="chapter-intro">
+                Four ways we work. The right one depends on your needs.
+            </p>
+
+            <div class="engagements">
+                <article>
+                    <h3 class="engagement-title">Fractional leadership</h3>
+                    <p class="engagement-body">
+                        One to two days per week, three to twelve months. A senior operator embedded in your team, with the authority to make decisions, the scope to see them through, and the context to know when to push back.
+                    </p>
+                </article>
+
+                <article>
+                    <h3 class="engagement-title">Scoped projects</h3>
+                    <p class="engagement-body">
+                        Fixed-scope engagements, two to twelve weeks, built for rapid iteration and a defined deliverable: a strategy memo, a grant program design, a product audit, a technology landscape. Clear start, clear end, clear artifact.
+                    </p>
+                </article>
+
+                <article>
+                    <h3 class="engagement-title">Formal advisor</h3>
+                    <p class="engagement-body">
+                        Recurring and light-touch. Monthly standing time plus async input. For founders and leaders who need a thinking partner more often than they need a hire.
+                    </p>
+                </article>
+
+                <article>
+                    <h3 class="engagement-title">Workshops and training</h3>
+                    <p class="engagement-body">
+                        Half-day to multi-day engagements on AI adoption, technical strategy, or open-source practice. Designed for teams that want to build internal capability.
+                    </p>
+                </article>
+            </div>
+
+            <div class="chapter-cta">
+                <p class="chapter-cta-copy">
+                    Not sure which shape fits? Tell us what's actually happening.
                 </p>
+                <a href="mailto:justin@pulsatance.ai" class="email-cta">justin@pulsatance.ai</a>
             </div>
-            
-            <div class="service-item">
-                <div class="service-number">1.3 // AI × BIOLOGY</div>
-                <div class="service-title">Navigate the Hype</div>
-                <p class="service-desc">
-                    Where foundation models actually create value in your domain. Separate signal from noise in the AI gold rush.
-                </p>
+        </section>
+
+        <hr class="rule">
+
+        <!-- ========== CHAPTER 3 ========== -->
+        <section id="chapter-3">
+            <div class="chapter-label">Chapter 3</div>
+            <h2 class="chapter-title">On the author</h2>
+
+            <div class="author">
+                <div>
+                    <p class="author-body">
+                        Justin is deeply curious about how technology can advance science and serve the public good, and unusually generous in sharing his experience and knowledge. The curiosity and the generosity are backed by more than 20 years of work where science, technology, and the public good meet: shaping product, grantmaking, and research strategy at the Chan Zuckerberg Initiative, scaling open data generation and sharing at the Allen Institute, and studying bird brains as a "full stack" neuroscientist (hardware, software, bench) at UCSD. Along the way, he has helped launch nonprofits and startups in the same territory.
+                    </p>
+                    <p class="author-body">
+                        He is known for moving comfortably between the lab, the boardroom, and the codebase, and for finding clear direction in problem spaces that don't yet have a name.
+                    </p>
+                </div>
+                <figure class="portrait">
+                    <div class="portrait-frame">
+                        <img src="assets/Justin-Kiggins.jpg" alt="Portrait of Justin Kiggins">
+                    </div>
+                    <figcaption class="portrait-caption">
+                        <div class="author-name">Justin Kiggins, PhD</div>
+                        <div class="author-role">Founder &amp; CEO</div>
+                    </figcaption>
+                </figure>
             </div>
-            
-            <div class="service-item">
-                <div class="service-number">1.4 // ECOSYSTEM BUILDING</div>
-                <div class="service-title">Design Developer Velocity</div>
-                <p class="service-desc">
-                    Platforms, APIs, community dynamics. Build the ecosystem that makes your technology the obvious choice.
-                </p>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="wordmark">Pulsatance</div>
+            <div class="footer-links">
+                <a href="mailto:justin@pulsatance.ai">Email</a>
+                <a href="https://linkedin.com/in/justinkiggins" target="_blank" rel="noopener">LinkedIn</a>
             </div>
-        </div> -->
-        
-        <div class="footer">
-            <div class="contact-info">
-                <a href="mailto:justin@pulsatance.ai">justin@pulsatance.ai</a>
-            </div>
-            <div class="page-number">— 1 —</div>
-        </div>
-    </div>
+        </footer>
+
+    </main>
+
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
