@@ -82,13 +82,29 @@
             position: relative;
         }
 
-        /* ---------- Wordmark ---------- */
+        /* ---------- Masthead ---------- */
+        .masthead {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--silver);
+            margin-bottom: 50px;
+        }
+
         .wordmark {
             font-size: 22px;
             font-weight: 300;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--charcoal);
+        }
+
+        .masthead-subtitle {
+            font-size: 11px;
+            color: var(--graphite);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         /* ---------- Hairline rule ---------- */
@@ -495,8 +511,9 @@
     <main class="page">
 
         <!-- ========== HERO ========== -->
-        <header>
+        <header class="masthead">
             <div class="wordmark">Pulsatance</div>
+            <div class="masthead-subtitle">AI × Biology</div>
         </header>
 
         <section class="hero">
