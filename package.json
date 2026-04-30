@@ -7,7 +7,7 @@
     "serve": "eleventy --serve",
     "watch": "eleventy --watch"
   },
-  "devDependencies": {
+  "dependencies": {
     "@11ty/eleventy": "^3.0.0"
   }
 }
