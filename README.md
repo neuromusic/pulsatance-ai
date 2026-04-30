@@ -7,12 +7,12 @@ Static marketing site for **Pulsatance** — a biotech strategy consultancy that
 ```bash
 npm install
 npm run serve   # local dev server with live reload
-npm run build   # build to dist/
+npm run build   # build to _site/
 ```
 
 ## Architecture
 
-Eleventy static site. Content lives in `src/content/*.md` (YAML front-matter + markdown body). Layout, partials, and styles are alongside in `src/`. Output is plain HTML in `dist/`.
+Eleventy static site. Content lives in `src/content/*.md` (YAML front-matter + markdown body). Layout, partials, and styles are alongside in `src/`. Output is plain HTML in `_site/`.
 
 - `src/content/` — one markdown file per section (hero, definition, chapters). Sections render in filename order.
 - `src/_data/site.json` — site-wide metadata (title, email, etc.).

@@ -11,10 +11,10 @@ Pulsatance.ai is a static marketing/service-overview site for a biotech strategy
 ```bash
 npm install
 npm run serve   # dev server at http://localhost:8080
-npm run build   # build to dist/
+npm run build   # build to _site/
 ```
 
-Vercel deploys via `npm run build` and serves from `dist/`.
+Vercel deploys via `npm run build` and serves from `_site/`.
 
 ## Architecture
 
@@ -25,7 +25,7 @@ Vercel deploys via `npm run build` and serves from `dist/`.
 - **`src/_includes/partials/*.njk`**: One partial per section `type` (hero, definition, chapter-prose, chapter-engagements, chapter-author).
 - **`src/index.njk`**: Loops `sections`, dispatches each to its partial by `type`, inserts `<hr class="rule">` after sections with `rule_after: true`.
 - **`src/styles.css`**: All styles, no inline CSS.
-- **`src/assets/`**: Images, copied through to `dist/assets/`.
+- **`src/assets/`**: Images, copied through to `_site/assets/`.
 
 Design system: Montserrat font, warm neutral palette (`#f5f5f0`, `#fafaf8`, `#2a2a2a`), coral accent (`#ff6b6b`). Centered 860px max-width "page" container with paper-grain overlay.
 
