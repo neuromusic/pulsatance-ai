@@ -14,7 +14,7 @@ items:
   - title: "Workshops and training"
     body: "Half-day to multi-day engagements on AI adoption, technical strategy, or open-source practice. Designed for teams that want to build internal capability."
 cta:
-  copy: "Not sure which shape fits? Tell us what's actually happening."
+  copy: "Not sure which shape fits? Let's talk and figure out what you need."
   email: "justin@pulsatance.ai"
 rule_after: true
 ---
