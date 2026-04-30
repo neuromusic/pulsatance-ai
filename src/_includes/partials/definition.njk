@@ -1,0 +1,13 @@
+<section class="definition" aria-label="Definition">
+    <div class="definition-label">{{ section.label }}</div>
+    <div class="definition-word">{{ section.word | safe }}</div>
+    <div class="definition-pos">{{ section.pos | safe }}</div>
+    <ol class="definition-list">
+        {%- for item in section.definitions %}
+        <li>{{ item | safe }}</li>
+        {%- endfor %}
+    </ol>
+    <p class="definition-etymology">
+        {{ section.etymology | safe }}
+    </p>
+</section>

@@ -1,0 +1,20 @@
+---
+layout: layout.njk
+permalink: /index.html
+---
+{%- for section in sections %}
+{%- if section.type == "hero" %}
+{% include "partials/hero.njk" %}
+{%- elif section.type == "definition" %}
+{% include "partials/definition.njk" %}
+{%- elif section.type == "chapter-prose" %}
+{% include "partials/chapter-prose.njk" %}
+{%- elif section.type == "chapter-engagements" %}
+{% include "partials/chapter-engagements.njk" %}
+{%- elif section.type == "chapter-author" %}
+{% include "partials/chapter-author.njk" %}
+{%- endif %}
+{%- if section.rule_after %}
+<hr class="rule">
+{%- endif %}
+{%- endfor %}

@@ -1,0 +1,36 @@
+<section{% if section.id %} id="{{ section.id }}"{% endif %}>
+    <div class="chapter-label">{{ section.label }}</div>
+    <h2 class="chapter-title">{{ section.title }}</h2>
+    {%- if section.intro %}
+    <p class="chapter-intro">
+        {{ section.intro }}
+    </p>
+    {%- endif %}
+
+    {%- if section.figure %}
+    <div class="chapter-grid">
+        <div class="chapter-body">
+            {{ section.body | safe }}
+        </div>
+        <figure class="figure">
+            <div class="figure-frame">
+                <img src="{{ section.figure.src }}" alt="{{ section.figure.alt }}">
+            </div>
+            <figcaption class="caption">{{ section.figure.caption | safe }}</figcaption>
+        </figure>
+    </div>
+    {%- else %}
+    <div class="chapter-body">
+        {{ section.body | safe }}
+    </div>
+    {%- endif %}
+
+    {%- if section.cta %}
+    <div class="chapter-cta">
+        <p class="chapter-cta-copy">
+            {{ section.cta.copy }}
+        </p>
+        <a href="mailto:{{ section.cta.email }}" class="email-cta">{{ section.cta.email }}</a>
+    </div>
+    {%- endif %}
+</section>

@@ -1,0 +1,29 @@
+<section{% if section.id %} id="{{ section.id }}"{% endif %}>
+    <div class="chapter-label">{{ section.label }}</div>
+    <h2 class="chapter-title">{{ section.title }}</h2>
+    {%- if section.intro %}
+    <p class="chapter-intro">
+        {{ section.intro }}
+    </p>
+    {%- endif %}
+
+    <div class="engagements">
+        {%- for item in section.items %}
+        <article>
+            <h3 class="engagement-title">{{ item.title }}</h3>
+            <p class="engagement-body">
+                {{ item.body | safe }}
+            </p>
+        </article>
+        {%- endfor %}
+    </div>
+
+    {%- if section.cta %}
+    <div class="chapter-cta">
+        <p class="chapter-cta-copy">
+            {{ section.cta.copy }}
+        </p>
+        <a href="mailto:{{ section.cta.email }}" class="email-cta">{{ section.cta.email }}</a>
+    </div>
+    {%- endif %}
+</section>

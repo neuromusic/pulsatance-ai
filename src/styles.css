@@ -1,0 +1,490 @@
+:root {
+    /* Color tokens per BRAND.md */
+    --charcoal: #2a2a2a;
+    --rich-black: #3a3a3a;
+    --graphite: #666;
+    --warm-gray: #555;
+    --slate: #999;
+    --silver: #d0d0d0;
+    --light-gray: #e0e0e0;
+    --warm-white: #fafaf8;
+    --off-white: #f9f9f7;
+    --ambient: #f5f5f0;
+    --coral: #ff6b6b;
+    --coral-light: #ff8f8f;
+    --coral-deep: #e85555;
+
+    --font-sans: 'Futura', 'Avenir', 'Montserrat', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--ambient);
+    color: var(--rich-black);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.page {
+    max-width: 860px;
+    margin: 40px auto;
+    background: var(--warm-white);
+    padding: 80px 90px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* Paper-grain overlay */
+.page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.01) 2px,
+        rgba(0, 0, 0, 0.01) 4px
+    );
+    pointer-events: none;
+}
+
+.page > * {
+    position: relative;
+}
+
+/* ---------- Masthead ---------- */
+.masthead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--silver);
+    margin-bottom: 50px;
+}
+
+.wordmark {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--charcoal);
+}
+
+.masthead-subtitle {
+    font-size: 11px;
+    color: var(--graphite);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ---------- Hairline rule ---------- */
+.rule {
+    border: 0;
+    border-top: 1px solid var(--silver);
+    margin: 70px 0;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    margin-top: 60px;
+    margin-bottom: 30px;
+    max-width: 720px;
+}
+
+.hero .headline {
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--charcoal);
+    letter-spacing: -0.2px;
+}
+
+/* ---------- Figure / caption ---------- */
+.figure {
+    margin: 0;
+}
+
+.figure-frame {
+    background: var(--off-white);
+    border: 1px solid var(--light-gray);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.figure-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Placeholder shown until figure image is generated */
+.figure-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    color: var(--slate);
+    text-align: center;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 0, 0, 0.02) 10px,
+            rgba(0, 0, 0, 0.02) 20px
+        ),
+        var(--off-white);
+}
+
+.figure-placeholder.square {
+    aspect-ratio: 1 / 1;
+}
+
+.figure-placeholder .ph-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--graphite);
+    margin-bottom: 6px;
+}
+
+.figure-placeholder .ph-desc {
+    font-size: 10px;
+    font-style: italic;
+    color: var(--graphite);
+    line-height: 1.4;
+}
+
+.caption {
+    font-size: 11px;
+    color: var(--warm-gray);
+    font-style: italic;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.caption strong {
+    font-weight: 600;
+    font-style: normal;
+    color: var(--graphite);
+}
+
+/* ---------- Definition block ---------- */
+.definition {
+    background: #fff;
+    border: 1px solid var(--light-gray);
+    padding: 30px 40px;
+    margin: 60px 0;
+}
+
+.definition-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--graphite);
+    margin-bottom: 16px;
+}
+
+.definition-word {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--charcoal);
+    letter-spacing: 0.5px;
+}
+
+.definition-pos {
+    font-size: 13px;
+    color: var(--graphite);
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+.definition-list {
+    list-style: none;
+    counter-reset: def;
+    margin-bottom: 20px;
+}
+
+.definition-list li {
+    counter-increment: def;
+    font-size: 14px;
+    color: var(--rich-black);
+    line-height: 1.7;
+    margin-bottom: 10px;
+    padding-left: 26px;
+    position: relative;
+}
+
+.definition-list li::before {
+    content: counter(def) ".";
+    position: absolute;
+    left: 0;
+    color: var(--graphite);
+    font-weight: 600;
+}
+
+.definition-etymology {
+    font-size: 12px;
+    color: var(--warm-gray);
+    font-style: italic;
+    line-height: 1.6;
+    padding-top: 16px;
+    border-top: 1px solid var(--light-gray);
+}
+
+/* ---------- Chapter ---------- */
+.chapter-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--graphite);
+    margin-bottom: 10px;
+}
+
+.chapter-title {
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--charcoal);
+    margin-bottom: 30px;
+    letter-spacing: -0.1px;
+}
+
+.chapter-intro {
+    font-size: 16px;
+    color: var(--rich-black);
+    line-height: 1.7;
+    margin-bottom: 50px;
+    max-width: 620px;
+}
+
+/* ---------- Chapter body ---------- */
+.chapter-grid {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 50px;
+    align-items: start;
+}
+
+.chapter-body {
+    max-width: 620px;
+}
+
+.chapter-body p {
+    font-size: 15px;
+    color: var(--rich-black);
+    line-height: 1.75;
+    margin-bottom: 18px;
+}
+
+.chapter-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Engagement grid ---------- */
+.engagements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 50px;
+    margin-top: 30px;
+}
+
+.engagement-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.engagement-body {
+    font-size: 14px;
+    color: var(--rich-black);
+    line-height: 1.7;
+}
+
+/* ---------- Author ---------- */
+.author {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 50px;
+    align-items: start;
+    margin-top: 30px;
+}
+
+.portrait-frame {
+    border: 1px solid var(--light-gray);
+    background: var(--off-white);
+    padding: 8px;
+}
+
+.portrait-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: grayscale(100%);
+}
+
+.portrait-caption {
+    margin-top: 12px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.portrait-caption .author-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+    letter-spacing: 0.3px;
+}
+
+.portrait-caption .author-role {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--graphite);
+    margin-top: 2px;
+}
+
+.author-body {
+    font-size: 14px;
+    color: var(--rich-black);
+    line-height: 1.75;
+    margin-bottom: 16px;
+}
+
+/* ---------- Chapter CTA ---------- */
+.chapter-cta {
+    margin-top: 50px;
+    padding: 30px 0 10px;
+    text-align: center;
+    border-top: 1px solid var(--light-gray);
+}
+
+.chapter-cta-copy {
+    font-size: 15px;
+    font-style: italic;
+    color: var(--rich-black);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.email-cta {
+    display: inline-block;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    color: var(--charcoal);
+    text-decoration: none;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.email-cta:hover,
+.email-cta:focus-visible {
+    color: var(--coral);
+    border-bottom-color: var(--coral);
+}
+
+.email-cta:active {
+    color: var(--coral-deep);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--silver);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer .wordmark {
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.footer-links a {
+    color: var(--warm-gray);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+    color: var(--coral);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+    .page {
+        margin: 16px;
+        padding: 40px 28px;
+    }
+
+    .chapter-grid,
+    .engagements,
+    .author {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .hero .headline {
+        font-size: 24px;
+    }
+
+    .definition {
+        padding: 24px 0;
+        margin: 40px 0;
+    }
+
+    .chapter-intro {
+        margin-bottom: 32px;
+    }
+
+    .portrait-frame {
+        max-width: 220px;
+    }
+
+    .rule {
+        margin: 50px 0;
+    }
+}

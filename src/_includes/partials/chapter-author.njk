@@ -1,0 +1,19 @@
+<section{% if section.id %} id="{{ section.id }}"{% endif %}>
+    <div class="chapter-label">{{ section.label }}</div>
+    <h2 class="chapter-title">{{ section.title }}</h2>
+
+    <div class="author">
+        <div>
+            {{ section.body | safe }}
+        </div>
+        <figure class="portrait">
+            <div class="portrait-frame">
+                <img src="{{ section.portrait.src }}" alt="{{ section.portrait.alt }}">
+            </div>
+            <figcaption class="portrait-caption">
+                <div class="author-name">{{ section.portrait.name }}</div>
+                <div class="author-role">{{ section.portrait.role | safe }}</div>
+            </figcaption>
+        </figure>
+    </div>
+</section>
