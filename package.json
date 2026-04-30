@@ -1,0 +1,13 @@
+{
+  "name": "pulsatance-site",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "watch": "eleventy --watch"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
