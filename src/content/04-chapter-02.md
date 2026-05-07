@@ -3,15 +3,13 @@ type: chapter-engagements
 id: chapter-2
 label: "Chapter 2"
 title: "On the organizations we work with"
-intro: "Four kinds of organizations."
+intro: "Three kinds of organizations."
 items:
-  - title: "Early-stage startups"
-    body: "Techbio, biotech, diagnostics, devices, therapeutics, and adjacent. Founders building before they have the leadership bench they will eventually need."
-  - title: "Research organizations"
-    body: "Private research institutes, FROs, academic labs, and private R&amp;D groups. Teams with deep science and growing software ambitions."
-  - title: "Philanthropies"
-    body: "Public and private foundations. Mission-driven funders taking big swings and shaping what science gets done."
-  - title: "Equity investors"
-    body: "Venture capital, angel investors, family offices. Scientific and technical diligence before the wire goes out, ongoing guidance for portfolio companies after."
+  - title: "Innovators"
+    body: "Building novel technology for life sciences &mdash; working at the frontier of techbio, biotech, diagnostics, devices, and therapeutics, before the path to scale is clear. Typically early-stage startups, research institutes, FROs, academic labs, and private R&amp;D groups."
+  - title: "Builders"
+    body: "Commercializing and disseminating technology in life sciences &mdash; moving from <em>does it work</em> to <em>does it scale</em>, and growing the team and product to match. Typically scaling startups and technology companies."
+  - title: "Funders"
+    body: "Investing in the future of life sciences &mdash; taking big swings and shaping what science gets done. They need scientific and technical diligence before the wire goes out, and ongoing guidance for portfolio companies after. Typically philanthropies, venture capital, angel investors, and family offices."
 rule_after: true
 ---
