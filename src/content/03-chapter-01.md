@@ -14,7 +14,7 @@ cta:
 rule_after: true
 ---
 
-Innovators know the science cold but often lack the operator experience to turn it into product at scale. Builders can ship product at scale but don't always have the scientific fluency the life sciences market demands. Funders know the field they're backing but don't always have a technical operator to pressure-test the strategy.
+Innovators know the science cold but often lack the operator experience to turn it into product at scale. Builders can ship product at scale but don't always have the scientific fluency the life sciences market demands. Operators run technology at scale but don't always have the technical lens to tell which emerging tools are worth the bet. Funders know the field they're backing but don't always have a technical operator to pressure-test the strategy.
 
 The decisions these teams face (which AI capabilities to invest in, how to turn technology into a product, what a portfolio should add up to, which vendor or hire is worth the risk) need both scientific fluency and an operator's instinct. That combination is rare on any team, and even rarer on the teams that need it most.
 
