@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<!--
+  Pulsatance × Amplify Scout — prototype scouting dashboard.
+  Self-contained: inline CSS (pulsatance tokens + dashboard) and vanilla JS (hash
+  routing + tier filter). No build, no server — opens on double-click.
+  Content: digests/2026-07-07-digest.md + the four linked reports/*.md.
+  Brand: pulsatance-brand skill. Coral (#ff6b6b) is rationed to ~5-10% — funnel
+  vector, the single lead-of-the-week marker, active filter, links, CTA.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulsatance — Preprint Scouting · Amplify Partners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+  /* ===== Pulsatance tokens (from pulsatance-brand/assets/tokens.css) ===== */
+  :root {
+    --charcoal:#2a2a2a; --rich-black:#3a3a3a; --graphite:#666666; --warm-gray:#555555;
+    --slate:#999999; --silver:#d0d0d0; --light-gray:#e0e0e0;
+    --warm-white:#fafaf8; --off-white:#f9f9f7; --ambient:#f5f5f0;
+    --coral:#ff6b6b; --coral-light:#ff8f8f; --coral-deep:#e85555;
+    --font-sans:'Futura','Avenir','Montserrat',sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:var(--font-sans); background:var(--ambient); color:var(--rich-black);
+    font-weight:400; line-height:1.6;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  }
+  .page {
+    max-width:900px; margin:40px auto; background:var(--warm-white);
+    padding:70px 80px; box-shadow:0 4px 20px rgba(0,0,0,0.08); position:relative;
+  }
+  .page::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.01) 2px,rgba(0,0,0,0.01) 4px);
+  }
+  .page > * { position:relative; }
+
+  .masthead {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom:20px; border-bottom:1px solid var(--silver); margin-bottom:44px;
+  }
+  .wordmark { font-size:22px; font-weight:300; letter-spacing:3px; text-transform:uppercase; color:var(--charcoal); }
+  .masthead-subtitle { font-size:11px; color:var(--graphite); letter-spacing:1px; text-transform:uppercase; }
+
+  .rule { border:0; border-top:1px solid var(--silver); margin:56px 0; }
+  .label { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--graphite); margin-bottom:10px; }
+
+  /* figure + caption */
+  .figure { margin:0; }
+  .figure-frame {
+    background:var(--off-white); border:1px solid var(--light-gray);
+    display:flex; align-items:center; justify-content:center; padding:24px; overflow:hidden;
+  }
+  .figure-frame svg { display:block; width:100%; height:auto; }
+  .caption { font-size:11px; color:var(--warm-gray); font-style:italic; line-height:1.5; margin-top:10px; }
+  .caption strong { font-weight:600; font-style:normal; color:var(--graphite); }
+
+  /* definition / rating banner */
+  .definition { background:#fff; border:1px solid var(--light-gray); padding:28px 36px; margin:40px 0; }
+  .definition-label { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--graphite); margin-bottom:14px; }
+  .definition-word { font-size:30px; font-weight:600; color:var(--charcoal); letter-spacing:0.5px; }
+  .definition-word.is-lead { border-bottom:2px solid var(--coral); display:inline-block; padding-bottom:2px; }
+  .definition-pos { font-size:13px; color:var(--graphite); font-style:italic; margin:6px 0 18px; }
+  .definition-rationale { font-size:14px; color:var(--rich-black); line-height:1.7; max-width:640px; }
+
+  /* chapter */
+  .chapter-title { font-size:22px; font-weight:400; font-style:italic; color:var(--charcoal); margin-bottom:22px; letter-spacing:-0.1px; }
+  .chapter-intro { font-size:16px; color:var(--rich-black); line-height:1.7; margin-bottom:12px; max-width:640px; }
+  .chapter-body { max-width:660px; }
+  .chapter-body p { font-size:15px; color:var(--rich-black); line-height:1.75; margin-bottom:16px; }
+  .chapter-body p:last-child { margin-bottom:0; }
+  .chapter-body strong { color:var(--charcoal); font-weight:600; }
+
+  /* CTA */
+  .chapter-cta { margin-top:44px; padding:28px 0 6px; text-align:center; border-top:1px solid var(--light-gray); }
+  .chapter-cta-copy { font-size:15px; font-style:italic; color:var(--rich-black); line-height:1.6; margin:0 auto 14px; max-width:520px; }
+  .email-cta { display:inline-block; color:var(--coral-deep); text-decoration:none; font-weight:600; letter-spacing:0.3px; border-bottom:1px solid var(--coral-light); }
+  .email-cta:hover { color:var(--coral); border-color:var(--coral); }
+
+  a { color:var(--coral-deep); }
+
+  /* ===== dashboard-specific ===== */
+  .view { display:none; }
+  .view.is-active { display:block; }
+
+  .issue-intro { font-size:16px; color:var(--rich-black); line-height:1.7; max-width:640px; margin-bottom:36px; }
+  .proto-note { font-size:11px; font-style:italic; color:var(--slate); }
+
+  /* filter bar */
+  .filter-bar { display:flex; align-items:baseline; gap:18px; margin:34px 0 26px; flex-wrap:wrap; }
+  .filter-bar .label { margin-bottom:0; }
+  .filter-btns { display:flex; gap:20px; }
+  .filter-btn {
+    background:none; border:0; cursor:pointer; font-family:inherit;
+    font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:var(--graphite);
+    padding:2px 0; border-bottom:2px solid transparent;
+  }
+  .filter-btn:hover { color:var(--charcoal); }
+  .filter-btn.is-active { color:var(--charcoal); border-bottom-color:var(--coral); }
+  .filter-spacer { flex:1; }
+
+  /* lead cards */
+  .lead-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .lead-card {
+    display:block; text-decoration:none; color:inherit;
+    background:#fff; border:1px solid var(--light-gray); padding:24px 26px 22px;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .lead-card:hover { border-color:var(--coral); transform:translateY(-2px); }
+  .lead-card-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:4px; }
+  .lead-name { font-size:16px; font-weight:600; letter-spacing:0.2px; line-height:1.35; color:var(--charcoal); }
+  .lead-flame { color:var(--coral); font-size:13px; margin-right:6px; }
+  .tier-label { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--graphite); white-space:nowrap; }
+  .lead-meta { font-size:11px; color:var(--warm-gray); letter-spacing:0.3px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--light-gray); }
+  .lead-summary { font-size:13px; color:var(--rich-black); line-height:1.65; margin-bottom:16px; }
+  /* thesis-fit score (grayscale — rating is science, coral stays rationed) */
+  .score { display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .score-dots { display:inline-flex; gap:4px; }
+  .score-dots i { width:9px; height:9px; border-radius:50%; border:1px solid var(--charcoal); display:block; }
+  .score-dots i.on { background:var(--charcoal); }
+  .score-dots.big i { width:12px; height:12px; }
+  .score-num { font-size:11px; font-weight:600; letter-spacing:0.5px; color:var(--graphite); }
+
+  /* category (Luke's two buckets) + tier word */
+  .lead-sub { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+  .cat-chip { font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); background:var(--off-white); border:1px solid var(--light-gray); padding:3px 9px; }
+  .tier-word { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--slate); }
+
+  /* bulleted summaries */
+  .lead-bullets, .rating-bullets { list-style:none; }
+  .lead-bullets li { font-size:13px; color:var(--rich-black); line-height:1.55; margin-bottom:8px; padding-left:16px; position:relative; }
+  .lead-bullets li:last-child { margin-bottom:0; }
+  .lead-bullets li::before, .rating-bullets li::before { content:''; position:absolute; left:2px; top:8px; width:5px; height:5px; background:var(--slate); }
+  .rating-bullets { max-width:660px; }
+  .rating-bullets li { font-size:15px; color:var(--rich-black); line-height:1.7; margin-bottom:16px; padding-left:20px; position:relative; }
+  .rating-bullets li::before { top:10px; }
+  .rating-bullets strong { color:var(--charcoal); font-weight:600; }
+
+  /* report rating banner (score-based) */
+  .rating-score { display:flex; align-items:center; gap:12px; margin:2px 0 12px; }
+  .rating-num { font-size:26px; font-weight:600; color:var(--charcoal); letter-spacing:0.5px; }
+  .rating-meta { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+
+  .lead-cardlink { font-size:11px; font-style:italic; color:var(--graphite); margin-top:16px; }
+  .lead-card:hover .lead-cardlink { color:var(--coral-deep); }
+
+  /* report view */
+  .back { display:inline-block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--graphite); text-decoration:none; margin-bottom:8px; }
+  .back:hover { color:var(--coral-deep); }
+  .report-title { font-size:26px; font-weight:400; line-height:1.3; color:var(--charcoal); letter-spacing:-0.2px; margin:14px 0 10px; max-width:680px; }
+  .report-meta { font-size:12px; color:var(--warm-gray); line-height:1.7; margin-bottom:8px; }
+  .report-meta a { color:var(--graphite); }
+
+  .note-box { background:var(--off-white); border:1px solid var(--light-gray); border-left:2px solid var(--slate); padding:22px 26px; margin-top:14px; }
+  .note-box p { font-size:14px; color:var(--rich-black); line-height:1.7; margin-bottom:12px; }
+  .note-box p:last-child { margin-bottom:0; }
+  .verbatim { font-style:italic; color:var(--warm-gray); font-size:13px; }
+
+  .section-h { font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--graphite); margin:44px 0 18px; }
+
+  /* author dossier */
+  .author-dossier { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .author-card { display:grid; grid-template-columns:52px 1fr; gap:16px; align-items:start; }
+  .mono-avatar {
+    width:52px; height:52px; border:1px solid var(--light-gray); background:var(--off-white);
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; font-weight:600; letter-spacing:1px; color:var(--graphite);
+    filter:grayscale(100%);
+  }
+  .author-name { font-size:13px; font-weight:600; color:var(--charcoal); letter-spacing:0.3px; }
+  .author-role { font-size:11px; font-style:italic; color:var(--graphite); margin:2px 0 6px; line-height:1.5; }
+  .author-links { font-size:11px; color:var(--graphite); }
+  .author-links a { color:var(--graphite); text-decoration:none; border-bottom:1px solid var(--silver); }
+  .author-links a:hover { color:var(--coral-deep); border-color:var(--coral-light); }
+
+  .sources { list-style:none; max-width:680px; }
+  .sources li { font-size:11px; color:var(--warm-gray); line-height:1.6; margin-bottom:7px; word-break:break-word; }
+  .sources a { color:var(--graphite); }
+
+  .report-footer { margin-top:50px; padding-top:22px; border-top:1px solid var(--light-gray); font-size:11px; font-style:italic; color:var(--warm-gray); }
+
+  .digest-colophon { margin-top:50px; padding-top:22px; border-top:1px solid var(--light-gray); text-align:center; font-size:12px; color:var(--warm-gray); letter-spacing:0.2px; }
+  .digest-colophon a { color:var(--graphite); text-decoration:none; border-bottom:1px solid var(--silver); }
+  .digest-colophon a:hover { color:var(--coral-deep); border-color:var(--coral-light); }
+
+  @media (max-width:680px) {
+    .page { padding:44px 26px; margin:0; }
+    .lead-grid, .author-dossier { grid-template-columns:1fr; }
+    .masthead { flex-direction:column; align-items:flex-start; gap:8px; }
+  }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================ MASTHEAD ============================ -->
+  <header class="masthead">
+    <div class="wordmark">Pulsatance</div>
+    <div class="masthead-subtitle">Preprint Scouting · Amplify Partners</div>
+  </header>
+
+  <!-- ============================ DIGEST VIEW ============================ -->
+  <main class="view" id="view-digest">
+
+    <div class="label">Weekly Digest · No. 14</div>
+    <h1 class="chapter-title" style="font-size:28px; margin-bottom:14px;">Preprint Scouting Digest</h1>
+    <p class="issue-intro">
+      Week of July 7, 2026. Four teams applying AI to drug discovery, caught at the preprint stage —
+      before a press release, before a priced round. Each was swept from bioRxiv, screened for thesis
+      fit, and its authors researched for the tell that a company is forming.
+    </p>
+
+    <!-- filter bar -->
+    <div class="filter-bar">
+      <div class="label">Thesis Tier</div>
+      <div class="filter-btns" role="group" aria-label="Filter leads by thesis tier">
+        <button class="filter-btn is-active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="strong">Strong</button>
+        <button class="filter-btn" data-filter="medium">Medium</button>
+      </div>
+      <div class="filter-spacer"></div>
+      <div class="proto-note">Prototype — sample data for discussion</div>
+    </div>
+
+    <!-- lead cards -->
+    <div class="lead-grid">
+
+      <a class="lead-card" data-tier="strong" data-cat="target" href="#/virtualcrispr">
+        <div class="lead-card-top">
+          <div class="lead-name"><span class="lead-flame">&#128293;</span>AI-Guided CRISPR Screen for Psoriasis Drug Targets</div>
+          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="score-num">5/5</span></div>
+        </div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Strong · lead of the week</span></div>
+        <div class="lead-meta">CZ Biohub Chicago · Northwestern · UChicago — bioRxiv 2026-02-28</div>
+        <ul class="lead-bullets">
+          <li>Cheaper topical small-molecules for psoriasis vs. costly systemic biologics.</li>
+          <li>In-house LLM novelty-filters a genome-wide CRISPR screen to nominate targets; leads confirmed in vivo.</li>
+          <li>IP filed; serial founder Shana Kelley — the week's strongest "a company could form here" tell.</li>
+        </ul>
+        <div class="lead-cardlink">Open full screen →</div>
+      </a>
+
+      <a class="lead-card" data-tier="strong" data-cat="generative" href="#/curagenai">
+        <div class="lead-card-top">
+          <div class="lead-name">AI-Designed Oral ACAT1 Inhibitors for Alzheimer's</div>
+          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div>
+        </div>
+        <div class="lead-sub"><span class="cat-chip">Generative design</span><span class="tier-word">Strong</span></div>
+        <div class="lead-meta">CuraGenAI Labs (NJ) — bioRxiv 2026-05-26</div>
+        <ul class="lead-bullets">
+          <li>First-in-class oral, brain-penetrant ACAT1 inhibitors for Alzheimer's.</li>
+          <li>Generative graph-transformer + RL designs the molecules end-to-end (~6M → 3 leads).</li>
+          <li>Company exists (NJ LLC) with provisional patents on the compounds; still all in-silico.</li>
+        </ul>
+        <div class="lead-cardlink">Open full screen →</div>
+      </a>
+
+      <a class="lead-card" data-tier="strong" data-cat="target" href="#/aethercell">
+        <div class="lead-card-top">
+          <div class="lead-name">AetherCell — Generative Virtual-Cell Engine for Drug Discovery</div>
+          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div>
+        </div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Strong</span></div>
+        <div class="lead-meta">Sun Yat-sen University (Guangzhou) — bioRxiv 2026-03-16</div>
+        <ul class="lead-bullets">
+          <li>Small-molecule repurposing validated in vivo (dry eye disease, ulcerative colitis).</li>
+          <li>Generative virtual-cell foundation model over ~519K profiles does the scientific work.</li>
+          <li>All-academic, government-funded, weights fully open-sourced — no company yet.</li>
+        </ul>
+        <div class="lead-cardlink">Open full screen →</div>
+      </a>
+
+      <a class="lead-card" data-tier="medium" data-cat="target" href="#/bumit">
+        <div class="lead-card-top">
+          <div class="lead-name">Small-Molecule Tractability of Cytokines</div>
+          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="score-num">3/5</span></div>
+        </div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Medium</span></div>
+        <div class="lead-meta">Vegas Lab (BU) + Koehler Lab (MIT / Broad) — bioRxiv 2026-04-23</div>
+        <ul class="lead-bullets">
+          <li>First-in-class small-molecule inhibitors of IL-17 / IL-13 / IL-23.</li>
+          <li>Binding-first screen of 65,000 compounds × 32 cytokines; AI (Boltz-2) only post-hoc.</li>
+          <li>Founder-heavy team (Vegas, Koehler) dispersing into biotech — the real signal.</li>
+        </ul>
+        <div class="lead-cardlink">Open full screen →</div>
+      </a>
+
+    </div>
+
+    <div class="digest-colophon">
+      Built by <a href="https://pulsatance.ai">pulsatance.ai</a> for Amplify Partners ·
+      <a href="mailto:justin@pulsatance.ai">justin@pulsatance.ai</a>
+    </div>
+  </main>
+
+  <!-- ============================ REPORT: VIRTUALCRISPR ============================ -->
+  <article class="view" id="view-virtualcrispr">
+    <a class="back" href="#/">← Back to digest</a>
+    <h1 class="report-title">AI-Guided CRISPR Screen for Psoriasis Drug Targets</h1>
+    <p class="report-meta">
+      Zhao, C. &amp; Shih, M. et al. · corresponding Abdalla M. Abdrabou · senior Shana O. Kelley<br>
+      CZ Biohub Chicago / Northwestern / UChicago · bioRxiv 2026-02-28 ·
+      <a href="https://www.biorxiv.org/content/10.64898/2026.02.26.708368v1" target="_blank" rel="noopener">10.64898/2026.02.26.708368</a>
+    </p>
+
+    <section class="definition">
+      <div class="definition-label">Thesis Fit</div>
+      <div class="rating-score"><span class="score-dots big"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="rating-num">5 / 5</span></div>
+      <div class="rating-meta"><span class="cat-chip">Target discovery</span><span class="definition-pos" style="margin:0;">Strong · <span class="accent">🔥</span> lead of the week</span></div>
+      <p class="definition-rationale">
+        The team's own LLM (VirtualCRISPR) prioritizes novel targets from a genome-wide CRISPR screen,
+        carried through to topical small-molecule leads with in-vivo efficacy — and IP has been filed.
+      </p>
+    </section>
+
+    <div class="section-h">Why this rating</div>
+    <ul class="rating-bullets">
+      <li><strong>AI is genuine and integral.</strong> The team's in-house LLM <strong>VirtualCRISPR</strong>
+      scores every gene in a genome-wide CRISPR screen (&gt;19,000 genes) as a novelty filter, nominating
+      uncharacterized targets (OXTR, ALOX5, CYP3A5) that small molecules then confirm in vivo — AI for
+      discovery, wet-lab for proof. Their own model, central to the platform.</li>
+      <li><strong>Full target → candidate → in-vivo arc.</strong> Nominated targets ALOX5 and OXTR were
+      validated; their topical inhibitors (Zileuton, Cligosiban) matched a systemic anti-IL17RA antibody in
+      a psoriasis mouse model, with multi-omics confirmation in 3D organotypic skin.</li>
+      <li><strong>Modality.</strong> Small-molecule (drug-repurposing) therapeutics for inflammatory skin
+      disease, from AI-prioritized primary-cell CRISPR functional genomics.</li>
+    </ul>
+
+    <div class="section-h">Early-stage company signals</div>
+    <div class="note-box">
+      <p>The bioRxiv form declares <span class="verbatim">"no competing interest,"</span> but the manuscript's
+        ethics statement says the team <span class="verbatim">"filed intellectual property related to the
+        results."</span> That filed IP is the signal — a concrete commercialization step, with no company named yet.</p>
+      <p>Filed IP without an incorporated entity fits a pre-incorporation academic team protecting a possible
+        spinout. All academic + nonprofit affiliations: CZ Biohub Chicago, Northwestern, and UChicago (the
+        VirtualCRISPR group).</p>
+    </div>
+
+    <div class="section-h">Key authors</div>
+    <div class="author-dossier">
+      <div class="author-card">
+        <div class="mono-avatar">SK</div>
+        <div>
+          <div class="author-name">Shana O. Kelley</div>
+          <div class="author-role">Senior author · President, CZ Biohub Chicago; Professor, Northwestern</div>
+          <div class="author-links">Serial founder — GeneOhm (→BD 2005), Xagenic, CTRL Therapeutics ($10M seed, General Catalyst 2023), Arma Biosciences. ·
+            <a href="https://en.wikipedia.org/wiki/Shana_O._Kelley" target="_blank" rel="noopener">Wikipedia</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">AA</div>
+        <div>
+          <div class="author-name">Abdalla M. Abdrabou</div>
+          <div class="author-role">Corresponding · CZ Biohub + Chemistry, Northwestern</div>
+          <div class="author-links">Early-career CRISPR-screening scientist; no company on record — the rising operator to track. ·
+            <a href="https://scholar.google.com/citations?hl=en&user=DWk2CvgAAAAJ" target="_blank" rel="noopener">Scholar</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">AK</div>
+        <div>
+          <div class="author-name">Aly A. Khan</div>
+          <div class="author-role">Built the AI · Assoc. Prof., CS / Pathology, UChicago (also CZ Biohub)</div>
+          <div class="author-links">Runs the Lab for Computational Immunology; VirtualCRISPR came out of his group. ·
+            <a href="http://people.cs.uchicago.edu/~aakhan/" target="_blank" rel="noopener">Lab</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">Sources</div>
+    <ul class="sources">
+      <li>Preprint: <a href="https://www.biorxiv.org/content/10.64898/2026.02.26.708368v1" target="_blank" rel="noopener">biorxiv.org/content/10.64898/2026.02.26.708368v1</a></li>
+      <li>CTRL Therapeutics $10M seed (General Catalyst, 2023) — PR Newswire</li>
+      <li>Aly Khan / VirtualCRISPR — people.cs.uchicago.edu/~aakhan</li>
+    </ul>
+    <div class="report-footer">Screen prepared by Pulsatance for Amplify Partners · justin@pulsatance.ai</div>
+  </article>
+
+  <!-- ============================ REPORT: CURAGENAI ============================ -->
+  <article class="view" id="view-curagenai">
+    <a class="back" href="#/">← Back to digest</a>
+    <h1 class="report-title">AI-Designed Oral ACAT1 Inhibitors for Alzheimer's</h1>
+    <p class="report-meta">
+      Agarwal S. et al. · corresponding Sharad Agarwal (sharad@curagen.ai)<br>
+      CuraGenAI Labs (NJ) · bioRxiv 2026-05-26 ·
+      <a href="https://www.biorxiv.org/content/10.64898/2026.05.21.727002v1" target="_blank" rel="noopener">10.64898/2026.05.21.727002</a>
+    </p>
+
+    <section class="definition">
+      <div class="definition-label">Thesis Fit</div>
+      <div class="rating-score"><span class="score-dots big"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="rating-num">4 / 5</span></div>
+      <div class="rating-meta"><span class="cat-chip">Generative design</span><span class="definition-pos" style="margin:0;">Strong · company already exists</span></div>
+      <p class="definition-rationale">
+        A generative-chemistry + RL pipeline designs a novel oral, brain-penetrant small-molecule series
+        against a genetically-anchored Alzheimer's target (ACAT1), yielding three nominated leads.
+      </p>
+    </section>
+
+    <div class="section-h">Why this rating</div>
+    <ul class="rating-bullets">
+      <li><strong>AI is the engine.</strong> A graph-transformer designs molecules de novo, tuned by
+      three-phase transfer learning and multi-objective RL (docking vs ACAT1, ACAT2-selectivity penalty,
+      ML-ensemble ADMET, synthetic accessibility). ~6M generated → ~7,300 CNS-optimized → 3 leads.</li>
+      <li><strong>Therapeutic intent is clear.</strong> A first-in-class oral program against ACAT1/SOAT1,
+      motivated by APOE-ε4 genetics; three leads with predicted BBB probability &gt;0.93 at/above the
+      nevanimibe benchmark.</li>
+      <li><strong>Modality.</strong> Small-molecule, CNS/oral — structure-based + generative chemistry, an
+      in-silico lead-optimization campaign.</li>
+    </ul>
+
+    <div class="section-h">Early-stage company signals</div>
+    <div class="note-box">
+      <p>Competing interests: <span class="verbatim">"S.A., R.P., and P.A. are affiliated with
+        CuraGenAI Labs, which has filed provisional patent applications on compounds described in this work.
+        The CuraGenAI Drug Discovery Platform is proprietary technology of CuraGenAI Labs."</span></p>
+      <p>A named company with filed provisional IP on the actual compounds — this one already exists, well past
+        pre-incorporation. Three of five authors sit at CuraGenAI Labs (NJ) behind a company-domain email;
+        collaborators at DRI Biotechnologies and Montefiore.</p>
+    </div>
+
+    <div class="section-h">Key authors</div>
+    <div class="author-dossier">
+      <div class="author-card">
+        <div class="mono-avatar">SA</div>
+        <div>
+          <div class="author-name">Sharad Agarwal</div>
+          <div class="author-role">Founder &amp; CEO, CuraGenAI Labs (corresponding)</div>
+          <div class="author-links">~20 yrs oncology/data science/clinical dev; prior leadership at Janssen (J&amp;J) and Bayer. ·
+            <a href="https://www.linkedin.com/in/sharad-agarwal-17981134/" target="_blank" rel="noopener">LinkedIn</a> ·
+            <a href="https://www.curagen.ai/about-us" target="_blank" rel="noopener">Company</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">PA</div>
+        <div>
+          <div class="author-name">Paul Agapow</div>
+          <div class="author-role">CuraGenAI Labs · AI-in-pharma pedigree</div>
+          <div class="author-links">Long-time Health Informatics director at AstraZeneca (ML for target ID); a meaningful talent signal. ·
+            <a href="https://www.crunchbase.com/person/paul-agapow" target="_blank" rel="noopener">Crunchbase</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">CR</div>
+        <div>
+          <div class="author-name">Crystal Ruff</div>
+          <div class="author-role">DRI Biotechnologies (Boston) · collaborator</div>
+          <div class="author-links">PhD, MBA; strategy &amp; innovation profile; declares no competing interest.</div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">SG</div>
+        <div>
+          <div class="author-name">Shikta Gupta</div>
+          <div class="author-role">Montefiore / Albert Einstein · clinical voice</div>
+          <div class="author-links">MD geriatrician treating Alzheimer's; declares no competing interest.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">Sources</div>
+    <ul class="sources">
+      <li>Preprint: <a href="https://www.biorxiv.org/content/10.64898/2026.05.21.727002v1" target="_blank" rel="noopener">biorxiv.org/content/10.64898/2026.05.21.727002v1</a></li>
+      <li>Company: <a href="https://www.curagen.ai/about-us" target="_blank" rel="noopener">curagen.ai/about-us</a></li>
+    </ul>
+    <div class="report-footer">Screen prepared by Pulsatance for Amplify Partners · justin@pulsatance.ai</div>
+  </article>
+
+  <!-- ============================ REPORT: AETHERCELL ============================ -->
+  <article class="view" id="view-aethercell">
+    <a class="back" href="#/">← Back to digest</a>
+    <h1 class="report-title">AetherCell — Generative Virtual-Cell Engine for Drug Discovery</h1>
+    <p class="report-meta">
+      Xie, Z.; Li, W.; Chen, Y.; Peng, Z.; Xiang, L.; Wang, D. · corresponding Zhi Xie<br>
+      Sun Yat-sen University (Zhongshan Ophthalmic Center) · bioRxiv 2026-03-16 ·
+      <a href="https://www.biorxiv.org/content/10.64898/2026.03.13.710968v1" target="_blank" rel="noopener">10.64898/2026.03.13.710968</a>
+    </p>
+
+    <section class="definition">
+      <div class="definition-label">Thesis Fit</div>
+      <div class="rating-score"><span class="score-dots big"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="rating-num">4 / 5</span></div>
+      <div class="rating-meta"><span class="cat-chip">Target discovery</span><span class="definition-pos" style="margin:0;">Strong · all-academic, open-sourced</span></div>
+      <p class="definition-rationale">
+        A generative foundation model is the core engine, and it carries a drug-repurposing program all the
+        way to in-vivo efficacy in two disease models — both pillars clearly present.
+      </p>
+    </section>
+
+    <div class="section-h">Why this rating</div>
+    <ul class="rating-bullets">
+      <li><strong>AI does the scientific work.</strong> A Backbone VAE learns a transcriptomic manifold from
+      ~519K RNA-seq profiles and ~2.8M perturbation signatures; MolFormer and ESM-C/STRING-GNN encoders plus
+      a Mixture-of-Experts repurposing head predict mechanism-specific responses. No conventional study
+      underneath.</li>
+      <li><strong>Wet-lab-demonstrated in vivo.</strong> Predicted two non-obvious candidates, then validated
+      both: teriflunomide for dry eye disease and dabigatran for ulcerative colitis, each to standard-of-care
+      parity.</li>
+      <li><strong>Modality.</strong> Small-molecule drug <em>repurposing</em> via a virtual-cell foundation
+      model — the deliverable is the platform, not a new chemical entity.</li>
+    </ul>
+
+    <div class="section-h">Early-stage company signals</div>
+    <div class="note-box">
+      <p>Competing interests: <span class="verbatim">"The authors declare that they have no
+        competing interests."</span> No founder role, equity, named startup, or patent — typical of a
+        pre-incorporation academic team.</p>
+      <p>Single-lab, all-academic (Zhongshan Ophthalmic Center, SYSU). Funding entirely Chinese public grants.
+        Code and weights fully open-sourced on GitHub with training data on Zenodo — an academic, non-IP
+        posture, not stealth.</p>
+    </div>
+
+    <div class="section-h">Key authors</div>
+    <div class="author-dossier">
+      <div class="author-card">
+        <div class="mono-avatar">ZX</div>
+        <div>
+          <div class="author-name">Zhi Xie</div>
+          <div class="author-role">Corresponding / senior · Prof. of Bioinformatics &amp; Genomics, SYSU</div>
+          <div class="author-links">~100 pubs, ~4,900 citations; no company or spin-out on record — profile entirely academic. ·
+            <a href="https://sysbio.gzzoc.com/xiezhi.html" target="_blank" rel="noopener">Lab</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">WL</div>
+        <div>
+          <div class="author-name">Wenyuan Li</div>
+          <div class="author-role">First author · built AetherCell / AC-RP / AC-DR</div>
+          <div class="author-links">Graduate researcher in Xie's lab; maintains the code (GitHub org "Wenyuan-AI4science"). The person to identify if this spins out. ·
+            <a href="https://github.com/Wenyuan-AI4science/AetherCell" target="_blank" rel="noopener">GitHub</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">Sources</div>
+    <ul class="sources">
+      <li>Preprint: <a href="https://www.biorxiv.org/content/10.64898/2026.03.13.710968v1.full" target="_blank" rel="noopener">biorxiv.org/content/10.64898/2026.03.13.710968v1</a></li>
+      <li>Code: <a href="https://github.com/Wenyuan-AI4science/AetherCell" target="_blank" rel="noopener">github.com/Wenyuan-AI4science/AetherCell</a></li>
+    </ul>
+    <div class="report-footer">Screen prepared by Pulsatance for Amplify Partners · justin@pulsatance.ai</div>
+  </article>
+
+  <!-- ============================ REPORT: BU/MIT ============================ -->
+  <article class="view" id="view-bumit">
+    <a class="back" href="#/">← Back to digest</a>
+    <h1 class="report-title">Small-Molecule Tractability of Cytokines</h1>
+    <p class="report-meta">
+      Raavi et al. · corresponding Arturo J. Vegas<br>
+      Vegas Lab (Boston University) + Koehler Lab (MIT Koch Institute / Broad) · bioRxiv 2026-04-23 ·
+      <a href="https://www.biorxiv.org/content/10.64898/2026.04.20.719718v1" target="_blank" rel="noopener">10.64898/2026.04.20.719718</a>
+    </p>
+
+    <section class="definition">
+      <div class="definition-label">Thesis Fit</div>
+      <div class="rating-score"><span class="score-dots big"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="rating-num">3 / 5</span></div>
+      <div class="rating-meta"><span class="cat-chip">Target discovery</span><span class="definition-pos" style="margin:0;">Medium · AI supporting, not the engine</span></div>
+      <p class="definition-rationale">
+        First-in-class small-molecule cytokine inhibitors (strong program), but the discovery engine is
+        experimental SMM screening — AI (Boltz-2) is genuine but post-hoc, and shapes no candidate selection.
+      </p>
+    </section>
+
+    <div class="section-h">Why this rating</div>
+    <ul class="rating-bullets">
+      <li><strong>AI is supporting, not the engine.</strong> Discovery is wet-lab SMM screening (65,000
+      compounds × 32 cytokines) with rule-based cheminformatics. Boltz-2 runs <em>after</em> discovery to
+      rationalize binding — real structural work, but it selects and filters nothing. Hence Medium.</li>
+      <li><strong>Therapeutic intent is strong.</strong> Orally-tractable inhibitors of validated cytokine
+      targets (IL-17, IL-13, IL-23) for RA / asthma / psoriasis / SLE — first-in-class hits at single- to
+      double-digit µM, plus a filed provisional patent.</li>
+      <li><strong>Modality.</strong> Small-molecule modulation of cytokine PPIs via a binding-first SMM
+      platform; the differentiated asset is the screening platform + tractability map, not an AI engine.</li>
+    </ul>
+
+    <div class="section-h">Early-stage company signals</div>
+    <div class="note-box">
+      <p>Declaration of Interests: <span class="verbatim">"A.N.K. is the co-founder of Samori Bio
+        and Epikare and advises Ladder Bio. A.J.V., S.P.Q., A.C. are current employees of Flagship Pioneering,
+        Light Horse Therapeutics and Blueprint Medicines respectively. Authors have filed a provisional patent
+        application through MIT and Boston University on this work."</span></p>
+      <p>Strong commercialization + venture signal — the corresponding author is a <em>current Flagship
+        Pioneering employee</em>, and IP is filed but assigned to the universities. Academic core (BU + MIT
+        Koch / Broad); industry ties surface only in the declaration.</p>
+    </div>
+
+    <div class="section-h">Key authors</div>
+    <div class="author-dossier">
+      <div class="author-card">
+        <div class="mono-avatar">AV</div>
+        <div>
+          <div class="author-name">Arturo J. Vegas</div>
+          <div class="author-role">Corresponding / co-senior · Career Development Prof., BU Chemistry</div>
+          <div class="author-links">Serial founder — Sigilon Therapeutics (acquired by Lilly, Aug 2023, ~$309.6M) and Preceres; listed as a current Flagship Pioneering employee. ·
+            <a href="https://www.avegaslab.com/" target="_blank" rel="noopener">Lab</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">AK</div>
+        <div>
+          <div class="author-name">Angela N. Koehler</div>
+          <div class="author-role">Co-senior · Prof. of Biological Engineering, MIT Koch Institute; Broad</div>
+          <div class="author-links">Prolific founder — Ligon Discovery, Kronos Bio (IPO 2020), 76Bio, Samori Bio, Epikare. SMM is her signature platform. ·
+            <a href="https://ki.mit.edu/people/faculty/angela-koehler" target="_blank" rel="noopener">Koch Institute</a></div>
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="mono-avatar">CA</div>
+        <div>
+          <div class="author-name">Co-authors in industry</div>
+          <div class="author-role">Dispersing into biotech</div>
+          <div class="author-links">Sean P. Quinnell → Light Horse Therapeutics (Versant, $62M Series A Jan 2025); Andrea Casiraghi → Blueprint Medicines.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-h">Sources</div>
+    <ul class="sources">
+      <li>Preprint: <a href="https://www.biorxiv.org/content/10.64898/2026.04.20.719718v1" target="_blank" rel="noopener">biorxiv.org/content/10.64898/2026.04.20.719718v1</a></li>
+      <li>Sigilon → Lilly acquisition (2023) — PR Newswire; Light Horse Therapeutics Series A — BusinessWire</li>
+    </ul>
+    <div class="report-footer">Screen prepared by Pulsatance for Amplify Partners · justin@pulsatance.ai</div>
+  </article>
+
+</div>
+
+<script>
+  // ---- Hash routing: #/ -> digest, #/<slug> -> report. Unknown -> digest. ----
+  var SLUGS = ['virtualcrispr','curagenai','aethercell','bumit'];
+  function route() {
+    var hash = (location.hash || '').replace(/^#\/?/, '');   // "" or "curagenai"
+    var id = SLUGS.indexOf(hash) !== -1 ? 'view-' + hash : 'view-digest';
+    var views = document.querySelectorAll('.view');
+    for (var i = 0; i < views.length; i++) {
+      views[i].classList.toggle('is-active', views[i].id === id);
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+
+  // ---- Tier filter (digest view) ----
+  var btns = document.querySelectorAll('.filter-btn');
+  for (var b = 0; b < btns.length; b++) {
+    btns[b].addEventListener('click', function () {
+      var f = this.getAttribute('data-filter');
+      for (var j = 0; j < btns.length; j++) btns[j].classList.toggle('is-active', btns[j] === this);
+      var cards = document.querySelectorAll('.lead-card');
+      for (var k = 0; k < cards.length; k++) {
+        var show = (f === 'all') || (cards[k].getAttribute('data-tier') === f);
+        cards[k].style.display = show ? '' : 'none';
+      }
+    }.bind(btns[b]));
+  }
+
+  route();
+</script>
+</body>
+</html>
