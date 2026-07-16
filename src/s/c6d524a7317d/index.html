@@ -113,10 +113,8 @@
     transition:border-color .15s ease, transform .15s ease;
   }
   .lead-card:hover { border-color:var(--coral); transform:translateY(-2px); }
-  .lead-card-top { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:4px; }
-  .lead-name { font-size:16px; font-weight:600; letter-spacing:0.2px; line-height:1.35; color:var(--charcoal); }
+  .lead-name { font-size:16px; font-weight:600; letter-spacing:0.2px; line-height:1.35; color:var(--charcoal); margin-bottom:12px; }
   .lead-flame { color:var(--coral); font-size:13px; margin-right:6px; }
-  .tier-label { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--graphite); white-space:nowrap; }
   .lead-meta { font-size:11px; color:var(--warm-gray); letter-spacing:0.3px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--light-gray); }
   .lead-summary { font-size:13px; color:var(--rich-black); line-height:1.65; margin-bottom:16px; }
   /* thesis-fit score (grayscale — rating is science, coral stays rationed) */
@@ -128,9 +126,8 @@
   .score-num { font-size:11px; font-weight:600; letter-spacing:0.5px; color:var(--graphite); }
 
   /* category (Luke's two buckets) + tier word */
-  .lead-sub { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; }
+  .lead-sub { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:14px; }
   .cat-chip { font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--charcoal); background:var(--off-white); border:1px solid var(--light-gray); padding:3px 9px; }
-  .tier-word { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--slate); }
 
   /* bulleted summaries */
   .lead-bullets, .rating-bullets { list-style:none; }
@@ -232,12 +229,9 @@
     <div class="lead-grid">
 
       <a class="lead-card" data-tier="strong" data-cat="target" href="#/virtualcrispr">
-        <div class="lead-card-top">
-          <div class="lead-name"><span class="lead-flame">&#128293;</span>AI-Guided CRISPR Screen for Psoriasis Drug Targets</div>
-          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="score-num">5/5</span></div>
-        </div>
-        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Strong · lead of the week</span></div>
-        <div class="lead-meta">CZ Biohub Chicago · Northwestern · UChicago — bioRxiv 2026-02-28</div>
+        <div class="lead-name"><span class="lead-flame">&#128293;</span>AI-Guided CRISPR Screen for Psoriasis Drug Targets</div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="score-num">5/5</span></div></div>
+        <div class="lead-meta">CZ Biohub Chicago · Northwestern · UChicago</div>
         <ul class="lead-bullets">
           <li>Cheaper topical small-molecules for psoriasis vs. costly systemic biologics.</li>
           <li>In-house LLM novelty-filters a genome-wide CRISPR screen to nominate targets; leads confirmed in vivo.</li>
@@ -247,12 +241,9 @@
       </a>
 
       <a class="lead-card" data-tier="strong" data-cat="generative" href="#/curagenai">
-        <div class="lead-card-top">
-          <div class="lead-name">AI-Designed Oral ACAT1 Inhibitors for Alzheimer's</div>
-          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div>
-        </div>
-        <div class="lead-sub"><span class="cat-chip">Generative design</span><span class="tier-word">Strong</span></div>
-        <div class="lead-meta">CuraGenAI Labs (NJ) — bioRxiv 2026-05-26</div>
+        <div class="lead-name">AI-Designed Oral ACAT1 Inhibitors for Alzheimer's</div>
+        <div class="lead-sub"><span class="cat-chip">Generative design</span><div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div></div>
+        <div class="lead-meta">CuraGenAI Labs (NJ)</div>
         <ul class="lead-bullets">
           <li>First-in-class oral, brain-penetrant ACAT1 inhibitors for Alzheimer's.</li>
           <li>Generative graph-transformer + RL designs the molecules end-to-end (~6M → 3 leads).</li>
@@ -262,12 +253,9 @@
       </a>
 
       <a class="lead-card" data-tier="strong" data-cat="target" href="#/aethercell">
-        <div class="lead-card-top">
-          <div class="lead-name">AetherCell — Generative Virtual-Cell Engine for Drug Discovery</div>
-          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div>
-        </div>
-        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Strong</span></div>
-        <div class="lead-meta">Sun Yat-sen University (Guangzhou) — bioRxiv 2026-03-16</div>
+        <div class="lead-name">AetherCell — Generative Virtual-Cell Engine for Drug Discovery</div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="score-num">4/5</span></div></div>
+        <div class="lead-meta">Sun Yat-sen University (Guangzhou)</div>
         <ul class="lead-bullets">
           <li>Small-molecule repurposing validated in vivo (dry eye disease, ulcerative colitis).</li>
           <li>Generative virtual-cell foundation model over ~519K profiles does the scientific work.</li>
@@ -277,12 +265,9 @@
       </a>
 
       <a class="lead-card" data-tier="medium" data-cat="target" href="#/bumit">
-        <div class="lead-card-top">
-          <div class="lead-name">Small-Molecule Tractability of Cytokines</div>
-          <div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="score-num">3/5</span></div>
-        </div>
-        <div class="lead-sub"><span class="cat-chip">Target discovery</span><span class="tier-word">Medium</span></div>
-        <div class="lead-meta">Vegas Lab (BU) + Koehler Lab (MIT / Broad) — bioRxiv 2026-04-23</div>
+        <div class="lead-name">Small-Molecule Tractability of Cytokines</div>
+        <div class="lead-sub"><span class="cat-chip">Target discovery</span><div class="score"><span class="score-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span><span class="score-num">3/5</span></div></div>
+        <div class="lead-meta">Vegas Lab (BU) + Koehler Lab (MIT / Broad)</div>
         <ul class="lead-bullets">
           <li>First-in-class small-molecule inhibitors of IL-17 / IL-13 / IL-23.</li>
           <li>Binding-first screen of 65,000 compounds × 32 cytokines; AI (Boltz-2) only post-hoc.</li>
