@@ -2,9 +2,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/styles.css": "styles.css" });
 
-  // Amplify Scout prototype — a self-contained page served verbatim at /scout/.
-  eleventyConfig.addPassthroughCopy({ "src/scout": "scout" });
-  eleventyConfig.ignores.add("src/scout/**");
+  // Amplify Scout prototype — self-contained, served verbatim at an unguessable /s/ path.
+  eleventyConfig.addPassthroughCopy({ "src/s": "s" });
+  eleventyConfig.ignores.add("src/s/**");
+  eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
 
   eleventyConfig.setLibrary(
     "md",
