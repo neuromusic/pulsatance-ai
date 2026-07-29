@@ -2,20 +2,20 @@
 type: chapter-prose
 id: chapter-1
 label: "Chapter 1"
-title: "On the problems we solve"
-intro: "Most science organizations have the taste to know what to build. What they're missing is someone in the room who has done it before."
+title: "On the problems I solve"
+intro: "Everyone knows AI should change how their organization works. Almost no one knows what to actually do on Monday morning."
 figure:
   src: "assets/figures/fig-01-angular-velocity.png"
   alt: "Angular velocity diagram: a rotating vector around a fixed point with curved arrow indicating rotation direction."
   caption: "<strong>Fig. 1.</strong> Angular velocity."
 cta:
-  copy: "If this sounds like your situation, or if you're not sure, write us. We read everything."
+  copy: "If this sounds like your situation, or if you're not sure, write me. I read everything."
   email: "justin@pulsatance.ai"
 rule_after: true
 ---
 
-Innovators know the science cold but often lack the operator experience to turn it into product at scale. Builders can ship product at scale but don't always have the scientific fluency the life sciences market demands. Operators run technology at scale but don't always have the technical lens to tell which emerging tools are worth the bet. Funders know the field they're backing but don't always have a technical operator to pressure-test the strategy.
+Most organizations have people who understand the technology or people who understand the mission. Rarely both, and rarely in the same room. So AI arrives as a vendor demo, or a pilot that looks impressive in the meeting and then quietly doesn't survive contact with the actual work. The tools are genuinely good now. The hard part is knowing which piece of your work they belong in, and what has to change around them.
 
-The decisions these teams face (which AI capabilities to invest in, how to turn technology into a product, what a portfolio should add up to, which vendor or hire is worth the risk) need both scientific fluency and an operator's instinct. That combination is rare on any team, and even rarer on the teams that need it most.
+So the work is concrete. It starts with a needs assessment: sitting with your team, watching what they actually do all day, and finding where these tools fit and where they don't. Then technical recommendations — what to buy, what to build, what to skip. Then training and onboarding, because a tool nobody uses is a tool you didn't buy. And then, usually, custom tooling: agent workflows and skills built for the specific job in front of you, not the generic one. Triage a pile of applications. Source and vet reviewers. Read the preprint firehose against a fund's thesis. Whatever the job is.
 
-That's the gap we fill. We bring the operator's experience, the technical judgment, and the scientific context, and we apply them to whichever decision is in front of you this quarter.
+That's the gap I fill. Twenty years of work where science, technology, nonprofits, and philanthropy meet, plus daily hands-on practice with these tools — I've been the person adopting them and the person building them. I bring all of it to whichever decision is in front of you this quarter.
