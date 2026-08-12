@@ -1,4 +1,4 @@
 ---
 type: hero
-headline: "I help mission-driven organizations figure out what AI actually changes about their work — and then we build it."
+headline: "I help mission-driven organizations figure out how to embrace AI for impact, aligned with their values — and then we build it."
 ---
